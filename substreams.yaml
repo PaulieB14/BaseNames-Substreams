@@ -1,7 +1,10 @@
 specVersion: v0.1.0
 package:
   name: base_names
-  version: v0.1.0
+  version: v0.1.2
+  url: https://github.com/PaulieB14/BaseNames-Substreams
+
+network: base
 
 protobuf:
   files:

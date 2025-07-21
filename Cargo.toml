@@ -1,6 +1,6 @@
 [package]
 name = "base_names"
-version = "0.1.0"
+version = "0.1.2"
 description = "Base Name Service Substreams package"
 edition = "2021"
 repository = "https://github.com/PaulieB14/BaseNames-Substreams"
