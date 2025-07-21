@@ -2,13 +2,6 @@
 
 A high-performance Substreams package for indexing Base Name Service (ENS-compatible naming system) on the Base network.
 
-## 🚀 What is This?
-
-This is a **Substreams package**, not a traditional subgraph. Substreams provides:
-- **Real-time indexing** (no 74-day sync time)
-- **10-100x faster** than traditional subgraphs
-- **No RPC rate limiting** issues
-- **Streaming data** instead of GraphQL queries
 
 ## 📋 Features
 
