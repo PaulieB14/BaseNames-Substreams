@@ -1,22 +1,30 @@
 [package]
 name = "base_names"
 version = "0.1.0"
+description = "Base Name Service Substreams package"
 edition = "2021"
+repository = "https://github.com/PaulieB14/BaseNames-Substreams"
 
 [lib]
+name = "substreams"
 crate-type = ["cdylib"]
 
 [dependencies]
-substreams = "0.5"
-substreams-ethereum = "0.5"
-prost = "0.11"
+ethabi = "17"
+hex-literal = "0.3.4"
 hex = "0.4"
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
-anyhow = "1.0"
-thiserror = "1.0"
+prost = "0.11"
+substreams = "0.5"
+substreams-ethereum = "0.9"
+anyhow = "1"
+
+# Required so ethabi > ethereum-types build correctly under wasm32-unknown-unknown
+[target.wasm32-unknown-unknown.dependencies]
+getrandom = { version = "0.2", features = ["custom"] }
 
 [build-dependencies]
+anyhow = "1"
+substreams-ethereum = "0.8"
 tonic-build = "0.9"
 
 [profile.release]

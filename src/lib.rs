@@ -2,6 +2,18 @@ use substreams::log;
 use substreams_ethereum::pb::eth::v2 as eth;
 use anyhow::Result;
 
+// Required for WASM builds
+#[cfg(target_arch = "wasm32")]
+use getrandom::getrandom;
+
+#[cfg(target_arch = "wasm32")]
+fn getrandom_impl(dest: &mut [u8]) -> Result<(), getrandom::Error> {
+    getrandom(dest)
+}
+
+#[cfg(target_arch = "wasm32")]
+getrandom::register_custom_getrandom!(getrandom_impl);
+
 // Base Name Service contract addresses on Base
 const REGISTRY_ADDRESS: &str = "0xb94704422c2a1e396835a571837aa5ae53285a95";
 const REGISTRAR_ADDRESS: &str = "0x03c4738ee98ae44591e1a4a4f3cab6641d95dd9a";

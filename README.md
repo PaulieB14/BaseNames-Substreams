@@ -1,191 +1,150 @@
 # Base Name Service Substreams
 
-A Substreams package for indexing Base Name Service (Base's ENS-compatible naming system) on the Base network.
+A high-performance Substreams package for indexing Base Name Service (ENS-compatible naming system) on the Base network.
 
-## 🚀 Features
+## 🚀 What is This?
 
-- **Full ENS Compatibility**: Indexes all Base Name Service events (registrations, transfers, reverse resolution)
-- **Real-time Processing**: Processes events as they happen on Base network
-- **No RPC Rate Limiting**: Uses Substreams for efficient data processing
-- **GraphQL Output**: Generates GraphQL-compatible entity changes
-- **Reverse Resolution**: Supports wallet address to domain name lookups
+This is a **Substreams package**, not a traditional subgraph. Substreams provides:
+- **Real-time indexing** (no 74-day sync time)
+- **10-100x faster** than traditional subgraphs
+- **No RPC rate limiting** issues
+- **Streaming data** instead of GraphQL queries
 
-## 📋 Prerequisites
+## 📋 Features
 
-- [Substreams CLI](https://substreams.dev/docs/develop/getting-started)
-- [Rust](https://rustup.rs/) (for building)
-- [Graph CLI](https://thegraph.com/docs/en/developing/installation/) (for deployment)
+- ✅ **Complete Base Name Service coverage**
+- ✅ **4 mapping functions** for all contract events
+- ✅ **Real-time event processing**
+- ✅ **ENS-compatible** naming system
+- ✅ **Base network** (Ethereum L2) support
 
-## 🏗️ Building
+## 🏗️ Architecture
 
+### Contracts Indexed
+- **Registry**: `0xB94704422c2a1E396835A571837Aa5AE53285a95`
+- **Registrar**: `0x03c4738Ee98aE44591e1A4A4F3CaB6641d95DD9a`
+- **Controller**: `0x79EA96012eEa67A83431F1701B3dFf7e37F9E282`
+- **Reverse**: `0xB94704422c2a1E396835A571837Aa5AE53285a95`
+
+### Module Handlers
+1. **`map_registry_events`** - Registry contract events
+2. **`map_registrar_events`** - Registrar contract events  
+3. **`map_controller_events`** - Controller contract events
+4. **`map_reverse_events`** - Reverse resolution events
+
+## 🛠️ Development
+
+### Prerequisites
+- Rust 1.65+
+- Substreams CLI
+- Base network access
+
+### Build
 ```bash
-# Build the Substreams package
+# Build WASM module
 cargo build --target wasm32-unknown-unknown --release
 
-# Generate protobuf code
-cargo build
+# Create package
+substreams pack
+
+# Deploy to registry
+substreams registry publish .
 ```
 
-## 🚀 Deployment
-
-### 1. Deploy to Substreams Sink
-
+### Local Testing
 ```bash
-# Deploy to The Graph's Substreams Sink
-substreams deploy \
-  --package-path substreams.yaml \
-  --endpoint https://base.substreams.pinax.network:443 \
-  --network base \
-  --start-block 0
+# Test on Base network
+substreams run map_registry_events \
+  --start-block 1000000 \
+  --stop-block +10 \
+  --endpoint https://base-mainnet.substreams.pinax.network:443
 ```
 
-### 2. Deploy to Graph Studio
+## 📊 Data Output
 
+This package outputs protobuf messages containing:
+- **Event data** from Base Name Service contracts
+- **Block information** (hash, number, timestamp)
+- **Transaction details** (hash, log index)
+- **Contract-specific fields** (names, owners, costs, etc.)
+
+## 🔄 Usage
+
+### Streaming Data
 ```bash
-# Deploy to Graph Studio for GraphQL API
-graph deploy \
-  --product hosted-service \
-  --node https://api.studio.thegraph.com/deploy/ \
-  --ipfs https://api.thegraph.com/ipfs/ \
-  base-names-substreams
+# Stream registry events
+substreams run map_registry_events \
+  --endpoint https://base-mainnet.substreams.pinax.network:443
+
+# Stream registrar events  
+substreams run map_registrar_events \
+  --endpoint https://base-mainnet.substreams.pinax.network:443
 ```
 
-## 📊 Data Sources
+### Substreams Sink
+Deploy to various sinks for different use cases:
+- **Substreams:SQL** - Database storage
+- **Substreams:Stream** - Real-time streaming
+- **Substreams:PubSub** - Message queuing
 
-The Substreams package indexes events from these Base Name Service contracts:
+## 🆚 vs Traditional Subgraphs
 
-- **Registry**: `0x03c4738ee98ae44591e1a4a4f3cab6641d95dd9a`
-- **BaseRegistrar**: `0x4ccb0bb02fcaba27e82a56646e81d8c5bc4119a5`
-- **RegistrarController**: `0x79ea96012eea67a83431f1701b3dff7e37f9e282`
-- **ReverseRegistrar**: `0xb94704422c2a1e396835a571837aa5ae53285a95`
+| Feature | Traditional Subgraph | Substreams |
+|---------|---------------------|------------|
+| Sync Time | 74+ days | Real-time |
+| RPC Limits | Rate limited | No limits |
+| Queries | GraphQL | Streaming |
+| Performance | 1x | 10-100x |
+| Data Freshness | Delayed | Instant |
 
-## 🔍 Indexed Events
+## 🏗️ Project Structure
 
-### Registry Events
-- `NewOwner`: Domain ownership transfers
-- `NewResolver`: Resolver contract assignments
-- `NewTTL`: TTL updates
-
-### Registrar Events
-- `NameRegistered`: New domain registrations
-- `NameRenewed`: Domain renewals
-- `Transfer`: NFT transfers
-
-### Controller Events
-- `NameRegistered`: Registration events from controller
-- `NameRenewed`: Renewal events from controller
-
-### Reverse Events
-- `ReverseClaimed`: Reverse resolution claims
-
-## 📈 Performance Benefits
-
-Compared to traditional subgraphs:
-
-- **10-100x faster** indexing
-- **No RPC rate limiting** issues
-- **Real-time processing** from deployment
-- **Efficient data streaming**
+```
+base-names-substreams/
+├── src/
+│   └── lib.rs              # Main handlers
+├── protobuf/
+│   └── base_names.proto    # Data schemas
+├── substreams.yaml         # Package manifest
+├── Cargo.toml             # Rust dependencies
+└── build.rs               # Build script
+```
 
 ## 🔧 Configuration
 
 ### Environment Variables
-
 ```bash
-# Base network RPC (optional - Substreams handles this)
-BASE_RPC_URL=https://mainnet.base.org
-
-# Substreams endpoint
-SUBSTREAMS_ENDPOINT=https://base.substreams.pinax.network:443
+# Substreams authentication
+export SUBSTREAMS_API_TOKEN="your-jwt-token"
+export SUBSTREAMS_ENDPOINT="https://base-mainnet.substreams.pinax.network:443"
 ```
 
-### Start Block
+## 📈 Benefits
 
-The package starts indexing from block 0 to capture all historical Base Name Service data.
-
-## 📝 Usage Examples
-
-### Query Domains
-
-```graphql
-{
-  domains(first: 10) {
-    id
-    name
-    labelName
-    owner
-    resolver
-  }
-}
-```
-
-### Query Registrations
-
-```graphql
-{
-  registrations(first: 10) {
-    id
-    domain {
-      id
-      name
-    }
-    registrationDate
-    expiryDate
-    registrant
-  }
-}
-```
-
-### Reverse Resolution
-
-```graphql
-{
-  reverseRegistrations(first: 10) {
-    id
-    domain {
-      id
-      name
-    }
-    address
-  }
-}
-```
-
-## 🛠️ Development
-
-### Local Testing
-
-```bash
-# Run locally with Substreams GUI
-substreams gui substreams.yaml map_registry_events
-
-# Test with sample data
-substreams run substreams.yaml map_registry_events \
-  --start-block 18000000 \
-  --end-block 18000100
-```
-
-### Adding New Events
-
-1. Add event signature to constants in `src/lib.rs`
-2. Create parsing function
-3. Add to appropriate mapping function
-4. Update protobuf definitions if needed
-
-## 📚 Resources
-
-- [Base Name Service Documentation](https://docs.basename.xyz/)
-- [Substreams Documentation](https://substreams.dev/docs/)
-- [The Graph Documentation](https://thegraph.com/docs/)
+1. **Solve RPC Rate Limiting** - No more API limits
+2. **Real-time Updates** - Instant data availability
+3. **Scalable Architecture** - Handle high throughput
+4. **Cost Effective** - Reduced infrastructure costs
+5. **Future Proof** - Built for modern blockchain indexing
 
 ## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Test thoroughly
+4. Test with `substreams run`
 5. Submit a pull request
 
 ## 📄 License
 
-MIT License - see LICENSE file for details. 
+MIT License - see LICENSE file for details
+
+## 🔗 Links
+
+- **Base Name Service**: https://basescan.org/address/0xb94704422c2a1e396835a571837aa5ae53285a95
+- **Substreams Docs**: https://docs.substreams.dev/
+- **Base Network**: https://base.org/
+
+---
+
+**Built with ❤️ for the Base ecosystem** 
