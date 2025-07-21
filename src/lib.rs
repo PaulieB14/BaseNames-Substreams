@@ -2,15 +2,11 @@ use substreams::log;
 use substreams_ethereum::pb::eth::v2 as eth;
 use anyhow::Result;
 
-mod pb {
-    include!(concat!(env!("OUT_DIR"), "/base_names.v1.rs"));
-}
-
-// Base Name Service Contract Addresses
-const REGISTRY_ADDRESS: &str = "0x03c4738ee98ae44591e1a4a4f3cab6641d95dd9a";
-const REGISTRAR_ADDRESS: &str = "0x4ccb0bb02fcaba27e82a56646e81d8c5bc4119a5";
-const CONTROLLER_ADDRESS: &str = "0x79ea96012eea67a83431f1701b3dff7e37f9e282";
-const REVERSE_ADDRESS: &str = "0xb94704422c2a1e396835a571837aa5ae53285a95";
+// Base Name Service contract addresses on Base
+const REGISTRY_ADDRESS: &str = "0x08D7C0242953446436F34b4C78Fe9da38c73668d";
+const REGISTRAR_ADDRESS: &str = "0x4B4e140D1f131fdaD6fb59C13AF796fD194e4135";
+const CONTROLLER_ADDRESS: &str = "0x79EA96012eEa67A83431F1701B3dFf7e37F9E282";
+const REVERSE_ADDRESS: &str = "0xB94704422c2a1E396835A571837Aa5AE53285a95";
 
 #[substreams::handlers::map]
 pub fn map_registry_events(block: eth::Block) -> Result<pb::RegistryEvents> {
@@ -32,7 +28,7 @@ pub fn map_registry_events(block: eth::Block) -> Result<pb::RegistryEvents> {
             owner: "0x".to_string(),
             block_number: block_number.clone(),
             block_hash: block_hash.clone(),
-            transaction_hash: "0x".to_string(), // We'll get this from the block
+            transaction_hash: "0x".to_string(),
             log_index: log.log.index,
         };
         
@@ -65,7 +61,7 @@ pub fn map_registrar_events(block: eth::Block) -> Result<pb::RegistrarEvents> {
             expires: 0,
             block_number: block_number.clone(),
             block_hash: block_hash.clone(),
-            transaction_hash: "0x".to_string(), // We'll get this from the block
+            transaction_hash: "0x".to_string(),
             log_index: log.log.index,
         };
         
@@ -98,7 +94,7 @@ pub fn map_controller_events(block: eth::Block) -> Result<pb::ControllerEvents> 
             expires: 0,
             block_number: block_number.clone(),
             block_hash: block_hash.clone(),
-            transaction_hash: "0x".to_string(), // We'll get this from the block
+            transaction_hash: "0x".to_string(),
             log_index: log.log.index,
         };
         
@@ -129,7 +125,7 @@ pub fn map_reverse_events(block: eth::Block) -> Result<pb::ReverseEvents> {
             owner: "0x".to_string(),
             block_number: block_number.clone(),
             block_hash: block_hash.clone(),
-            transaction_hash: "0x".to_string(), // We'll get this from the block
+            transaction_hash: "0x".to_string(),
             log_index: log.log.index,
         };
         
@@ -138,4 +134,8 @@ pub fn map_reverse_events(block: eth::Block) -> Result<pb::ReverseEvents> {
     
     log::info!("Processed {} reverse events", events.reverse_claimed.len());
     Ok(events)
+}
+
+pub mod pb {
+    include!(concat!(env!("OUT_DIR"), "/base_names.v1.rs"));
 }
