@@ -21,7 +21,7 @@ const CONTROLLER_ADDRESS: &str = "0x79EA96012eEa67A83431F1701B3dFf7e37F9E282";
 const REVERSE_ADDRESS: &str = "0xB94704422c2a1E396835A571837Aa5AE53285a95";
 
 #[substreams::handlers::map]
-pub fn map_registry_events(block: eth::Block) -> Result<pb::RegistryEvents> {
+pub fn map_registry_events(_params: String, block: eth::Block) -> Result<pb::RegistryEvents> {
     let mut events = pb::RegistryEvents::default();
     let block_hash = hex::encode(&block.hash);
     let block_number = block.number.to_string();
@@ -52,7 +52,7 @@ pub fn map_registry_events(block: eth::Block) -> Result<pb::RegistryEvents> {
 }
 
 #[substreams::handlers::map]
-pub fn map_registrar_events(block: eth::Block) -> Result<pb::RegistrarEvents> {
+pub fn map_registrar_events(_params: String, block: eth::Block) -> Result<pb::RegistrarEvents> {
     let mut events = pb::RegistrarEvents::default();
     let block_hash = hex::encode(&block.hash);
     let block_number = block.number.to_string();
@@ -85,7 +85,7 @@ pub fn map_registrar_events(block: eth::Block) -> Result<pb::RegistrarEvents> {
 }
 
 #[substreams::handlers::map]
-pub fn map_controller_events(block: eth::Block) -> Result<pb::ControllerEvents> {
+pub fn map_controller_events(_params: String, block: eth::Block) -> Result<pb::ControllerEvents> {
     let mut events = pb::ControllerEvents::default();
     let block_hash = hex::encode(&block.hash);
     let block_number = block.number.to_string();
@@ -118,7 +118,7 @@ pub fn map_controller_events(block: eth::Block) -> Result<pb::ControllerEvents> 
 }
 
 #[substreams::handlers::map]
-pub fn map_reverse_events(block: eth::Block) -> Result<pb::ReverseEvents> {
+pub fn map_reverse_events(_params: String, block: eth::Block) -> Result<pb::ReverseEvents> {
     let mut events = pb::ReverseEvents::default();
     let block_hash = hex::encode(&block.hash);
     let block_number = block.number.to_string();
