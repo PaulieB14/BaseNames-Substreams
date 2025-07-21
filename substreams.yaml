@@ -1,0 +1,54 @@
+specVersion: v0.1.0
+package:
+  name: base_names
+  version: v0.1.0
+
+protobuf:
+  files:
+    - base_names.proto
+  importPaths:
+    - ./protobuf
+
+binaries:
+  default:
+    type: wasm/rust-v1
+    file: target/wasm32-unknown-unknown/release/base_names.wasm
+
+modules:
+  - name: map_registry_events
+    kind: map
+    inputs:
+      - params: string
+      - source: sf.ethereum.type.v2.Block
+    output:
+      type: proto:base_names.v1.RegistryEvents
+    binary: default
+
+  - name: map_registrar_events
+    kind: map
+    inputs:
+      - params: string
+      - source: sf.ethereum.type.v2.Block
+    output:
+      type: proto:base_names.v1.RegistrarEvents
+    binary: default
+
+  - name: map_controller_events
+    kind: map
+    inputs:
+      - params: string
+      - source: sf.ethereum.type.v2.Block
+    output:
+      type: proto:base_names.v1.ControllerEvents
+    binary: default
+
+  - name: map_reverse_events
+    kind: map
+    inputs:
+      - params: string
+      - source: sf.ethereum.type.v2.Block
+    output:
+      type: proto:base_names.v1.ReverseEvents
+    binary: default
+
+ 

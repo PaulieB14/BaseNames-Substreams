@@ -1,0 +1,26 @@
+[package]
+name = "base_names"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+substreams = "0.5"
+substreams-ethereum = "0.5"
+prost = "0.11"
+hex = "0.4"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+anyhow = "1.0"
+thiserror = "1.0"
+
+[build-dependencies]
+tonic-build = "0.9"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"

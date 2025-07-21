@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package names.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// Controller Entity
+message Controller {
+  string id = 1;
+  string name = 2;
+  string label = 3;
+  string owner = 4;
+  uint64 cost = 5;
+  uint64 expires = 6;
+  string block_number = 7;
+  string block_hash = 8;
+  string transaction_hash = 9;
+  uint32 log_index = 10;
+} 

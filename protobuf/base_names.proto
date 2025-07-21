@@ -1,0 +1,142 @@
+syntax = "proto3";
+
+package base_names.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// Registry Events
+message RegistryEvents {
+  repeated NewOwner new_owners = 1;
+  repeated NewResolver new_resolvers = 2;
+  repeated NewTTL new_ttls = 3;
+}
+
+message NewOwner {
+  string node = 1;
+  string label = 2;
+  string owner = 3;
+  string block_number = 4;
+  string block_hash = 5;
+  string transaction_hash = 6;
+  uint32 log_index = 7;
+}
+
+message NewResolver {
+  string node = 1;
+  string resolver = 2;
+  string block_number = 3;
+  string block_hash = 4;
+  string transaction_hash = 5;
+  uint32 log_index = 6;
+}
+
+message NewTTL {
+  string node = 1;
+  uint64 ttl = 2;
+  string block_number = 3;
+  string block_hash = 4;
+  string transaction_hash = 5;
+  uint32 log_index = 6;
+}
+
+// Registrar Events
+message RegistrarEvents {
+  repeated NameRegistered name_registered = 1;
+  repeated NameRenewed name_renewed = 2;
+  repeated Transfer transfer = 3;
+}
+
+message NameRegistered {
+  string name = 1;
+  string label = 2;
+  string owner = 3;
+  uint64 cost = 4;
+  uint64 expires = 5;
+  string block_number = 6;
+  string block_hash = 7;
+  string transaction_hash = 8;
+  uint32 log_index = 9;
+}
+
+message NameRenewed {
+  string name = 1;
+  string label = 2;
+  uint64 cost = 3;
+  uint64 expires = 4;
+  string block_number = 5;
+  string block_hash = 6;
+  string transaction_hash = 7;
+  uint32 log_index = 8;
+}
+
+message Transfer {
+  string from = 1;
+  string to = 2;
+  string token_id = 3;
+  string block_number = 4;
+  string block_hash = 5;
+  string transaction_hash = 6;
+  uint32 log_index = 7;
+}
+
+// Controller Events
+message ControllerEvents {
+  repeated NameRegistered controller_name_registered = 1;
+  repeated NameRenewed controller_name_renewed = 2;
+}
+
+// Reverse Events
+message ReverseEvents {
+  repeated ReverseClaimed reverse_claimed = 1;
+}
+
+message ReverseClaimed {
+  string addr = 1;
+  string node = 2;
+  string owner = 3;
+  string block_number = 4;
+  string block_hash = 5;
+  string transaction_hash = 6;
+  uint32 log_index = 7;
+}
+
+// Domain Entity
+message Domain {
+  string id = 1;
+  string name = 2;
+  string label_name = 3;
+  string label_hash = 4;
+  string parent = 5;
+  string subdomain_count = 6;
+  string resolved_address = 7;
+  string owner = 8;
+  string resolver = 9;
+  uint64 ttl = 10;
+  bool is_migrated = 11;
+  uint64 created_at = 12;
+  string subdomain_count_updated_at = 13;
+}
+
+// Registration Entity
+message Registration {
+  string id = 1;
+  string domain = 2;
+  string registration_date = 3;
+  string expiry_date = 4;
+  string cost = 5;
+  string label_name = 6;
+  string label_hash = 7;
+  string registrant = 8;
+  string label_owner = 9;
+}
+
+// Reverse Registration Entity
+message ReverseRegistration {
+  string id = 1;
+  string domain = 2;
+  string address = 3;
+  string block_number = 4;
+  string block_hash = 5;
+  string transaction_hash = 6;
+  uint32 log_index = 7;
+} 
