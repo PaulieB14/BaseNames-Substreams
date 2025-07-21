@@ -1,7 +1,0 @@
-   Compiling base_names v0.1.0 (/Users/paulbarba/base-names-substreams)
-warning: Linking globals named 'alloc': symbol multiply defined!
-
-error: failed to load bitcode of module "substreams-2c2a69c266841b5b.substreams.73fec486becf8bf4-cgu.0.rcgu.o": 
-
-warning: `base_names` (lib) generated 1 warning
-error: could not compile `base_names` (lib) due to 1 previous error; 1 warning emitted
